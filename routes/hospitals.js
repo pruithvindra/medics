@@ -1,12 +1,12 @@
-const { Router } = require('express') ;
-const{createHospital, getHospitals} =  require( "../controllers/hospital");
+// const { Router } = require('express') ;
+// const{createHospital, getHospitals,updateHospital,getHospital} =  require( "../controllers/hospital");
 
-const router = Router();
+// const router = Router();
 
-router.post('/createHospital',createHospital);
-router.get('/Hospitals',getHospitals);
+// router.post('/',createHospital).get(getHospitals);
+
+// router.route('/:id').
+//   patch(updateHospital).get(getHospital)
 
 
-
-
-module.exports = router;
+// module.exports = router;

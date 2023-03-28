@@ -1,11 +1,12 @@
 {
   "name": "hospital",
   "version": "1.0.0",
-  "description": "",
+  "description": "��#\u0000 \u0000m\u0000e\u0000d\u0000i\u0000c\u0000s\u0000\r\u0000 \u0000",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon server.js",
+    "debug" : "ndb server.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,16 @@
   },
   "dependencies": {
     "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.8.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pruithvindra/medics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pruithvindra/medics/issues"
+  },
+  "homepage": "https://github.com/pruithvindra/medics#readme"
 }

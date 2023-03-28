@@ -2,48 +2,41 @@ const express =  require('express');
 const bodyParser = require( "body-parser");
 const doctorRoutes = require( "./routes/doctor");
 const hospitalRoutes = require( "./routes/hospitals");
-const mongoose = require( "mongoose");
+const patientRoutes = require( "./routes/patient");
+const appointmentRoutes = require( "./routes/appointment");
+const globalErrorHandler = require('./controllers/error_controller');
 
+const dotenv = require('dotenv');
+const { Error } = require('mongoose');
+
+dotenv.config({ path: './config.env' });
 const app = express();
-app.use(express.json()) 
-    app.use (express.urlencoded({extended: false}))
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
     app.use(function(req, res, next) {
        res.header("Access-Control-Allow-Origin", "*");
        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,Content-Type, Accept");
-       next();
+        console.log("id is tyu " + req.params);
+        //throw new Error('Well, you may need another coffee :)')  
    });
 
    
-app.use(doctorRoutes)
-app.use(hospitalRoutes)
+   app.use('/api/v1/doctors', doctorRoutes);
+  // app.use('/api/v1/appointments', hospitalRoutes);
+   app.use('/api/v1/patients', patientRoutes);
+   app.use('/api/v1/appointments', appointmentRoutes);
+ // app.use(hospitalRoutes)
 
 
-app.use((req,res,next)=>{
+app.all('*', (req, res, next) => {
+  const port = process.env.PORT || 3000;
+  console.log(port);
+  console.log("here");
+  res.send("not found");
+});
 
-    console.log("here");
+app.use(globalErrorHandler);
 
-})
-
-
-mongoose.connect('mongodb+srv://pru:123456789d@cluster0.te02x.mongodb.net/Medics')
-  .then(result => {
-
-
-    // User.findOne().then(user => {
-    //   if (!user) {
-    //     const user = new User({
-    //       name: "Ahmed",
-    //       email: 'ahmed@ahmed.com',
-    //       cart: {
-    //         items: []
-    //       }
-    //     })
-    //     user.save()
-    //   }
-    // })
-
-    app.listen(3000);
-  }).catch(err => {
-    console.log(err)
-  })
+module.exports = app;
