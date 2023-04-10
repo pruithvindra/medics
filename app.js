@@ -2,6 +2,7 @@ const express =  require('express');
 const bodyParser = require( "body-parser");
 const doctorRoutes = require( "./routes/doctor");
 const hospitalRoutes = require( "./routes/hospitals");
+const userRoutes = require( "./routes/user");
 const patientRoutes = require( "./routes/patient");
 const appointmentRoutes = require( "./routes/appointment");
 const globalErrorHandler = require('./controllers/error_controller');
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
    
    app.use('/api/v1/doctors', doctorRoutes);
+   app.use('/api/v1/user', userRoutes);
   // app.use('/api/v1/appointments', hospitalRoutes);
    app.use('/api/v1/patients', patientRoutes);
    app.use('/api/v1/appointments', appointmentRoutes);
