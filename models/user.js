@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['patient', 'doctor', 'sub-admin', 'admin'],
-    default: 'user'
+    default: 'sub-admin'
   },
   password: {
     type: String,
@@ -107,4 +107,4 @@ userSchema.methods.correctPassword = async function(candidatePassword, userPassw
 
 const User = mongoose.model('User', userSchema);
 
-exports. User;
+module.exports =User;

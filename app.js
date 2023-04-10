@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
        res.header("Access-Control-Allow-Origin", "*");
        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,Content-Type, Accept");
         console.log("id is tyu " + req.params);
+        next();
         //throw new Error('Well, you may need another coffee :)')  
    });
 
