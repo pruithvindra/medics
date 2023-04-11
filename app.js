@@ -6,7 +6,7 @@ const userRoutes = require( "./routes/user");
 const patientRoutes = require( "./routes/patient");
 const appointmentRoutes = require( "./routes/appointment");
 const globalErrorHandler = require('./controllers/error_controller');
-
+const  bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const { Error } = require('mongoose');
 
@@ -16,11 +16,15 @@ const app = express();
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-    app.use(function(req, res, next) {
+    app.use(async function  (req, res, next)  {
        res.header("Access-Control-Allow-Origin", "*");
        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,Content-Type, Accept");
-        console.log("id is tyu " + req.params);
-        next();
+      
+        // var ok ="pass";
+        // var okk = await bcrypt.hash("pass", 12);
+        // var vaoo = await bcrypt.compare(ok, okk);
+        // console.log("id is tyu " + vaoo + okk);
+       next();
         //throw new Error('Well, you may need another coffee :)')  
    });
 
@@ -37,7 +41,7 @@ app.all('*', (req, res, next) => {
   const port = process.env.PORT || 3000;
   console.log(port);
   console.log("here");
-  res.send("not found");
+  res.send(" route not found");
 });
 
 app.use(globalErrorHandler);

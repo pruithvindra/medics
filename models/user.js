@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: 'default.jpg'
   },
   role: {
     type: String,
@@ -41,6 +40,83 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same!'
     }
   },
+  //patient
+  age: { type: Number ,
+    select: true,
+    required:[function() {
+      return this.role === 'patient' || this.role === 'doctor'
+    }, 'age is required!' ],
+  
+  },
+   //patient
+    gender: { type: String,
+      required:[true, 'gender is required!' ],
+      enum: ['male', 'female', 'other']},
+     // all
+    phone: { 
+      type: String,  
+      required:[true,'phone number is required!' ],
+  }, 
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  //  select: false
+  },
+    //patient
+    address: { type: String }, 
+    //patient
+    emergencyContact: {
+        name: { type: String },
+        phone: { type: String },
+        relation: { type: String }
+    },
+    //dr
+    workingDays: {
+      type: [String],
+      // required: [function() {
+      //   return this.role === 'doctor'
+      // }, 'workingDays is required!' ],
+      default : function() {
+        if( this.role === 'doctor' ){
+         return  [1,2,3,4,5,6,7]
+        }
+     }
+      
+    },
+    //dr
+    specialization: {
+      type: String,
+      // required: [function() {
+      //   return this.role === 'doctor'
+      // }, 'specialization is required!' ],
+  
+      default : function() {
+         if( this.role === 'doctor' ){
+          return "general med"
+         }
+      }
+    },
+    //dr
+    expierence: {  
+      type: Number,
+       required: [function() {
+        return this.role === 'doctor'
+      }, 'expierence is required!' ],
+    },
+    //dr
+    description: {
+      type: String,
+      required: [function() {
+        return this.role === 'doctor'
+      }, 'description is required!' ],
+    },
+    //dr
+    consultationFee: {
+      type: Number,
+      required: [function() {
+        return this.role === 'doctor'
+      }, 'consultationFee is required!' ],
+    },
   passwordChangedAt: Date,
 //   passwordResetToken: String,
 //   passwordResetExpires: Date,
@@ -77,6 +153,8 @@ userSchema.pre(/^find/, function(next) {
 });
 
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+  var vaoo = await bcrypt.compare(candidatePassword, userPassword)
+  console.log(vaoo);
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 

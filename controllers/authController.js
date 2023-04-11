@@ -36,16 +36,73 @@ const createSendToken = (user, statusCode, req, res) => {
 
 
 exports.signup = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
-  });
+  console.log(req.body.age);
+ let  newUser ;
+  if(req.body.role !== undefined && req.body.role ==='patient'){
+    newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      age: req.body.age,
+      role:req.body.role,
+      photo: req.body.photo,
+      gender: req.body.gender,
+      address: req.body.address,
+      emergencyContact:req.body.emergencyContact,
+      phone: req.body.phone,
+      passwordConfirm: req.body.passwordConfirm
+    });
+  
+  } else  if(req.body.role !== undefined && req.body.role ==='doctor'){
+    newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      age: req.body.age,
+      role:req.body.role,
+      photo: req.body.photo,
+      gender: req.body.gender,
+      phone: req.body.phone,
+      consultationFee: req.body.consultationFee,
+      description: req.body.description,
+      expierence: req.body.expierence,
+      specialization: req.body.specialization,
+      workingDays: req.body.workingDays,
+      passwordConfirm: req.body.passwordConfirm,
+    });
+  
+  }
+  else{
+    newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,role:req.body.role,
+      password: req.body.password, gender: req.body.gender,
+      passwordConfirm: req.body.passwordConfirm
+    });
+  }
+  
 
   //const url = `${req.protocol}://${req.get('host')}/me`;
 //  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, req, res);
+});
+
+exports.signin = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // 1) Check if email and password exist
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password!', 400));
+  }
+  // 2) Check if user exists && password is correct
+  const user = await User.findOne({ email }).select('+password');
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError('Incorrect email or password', 401));
+  }
+
+  // 3) If everything ok, send token to client
+  createSendToken(user, 200, req, res);
 });
