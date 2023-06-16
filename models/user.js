@@ -129,6 +129,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save', async function(next) {
   // Only run this function if password was actually modified
+  console.log ("000-0-000");
   if (!this.isModified('password')) return next();
 
   // Hash the password with cost of 12
@@ -158,15 +159,15 @@ userSchema.methods.correctPassword = async function(candidatePassword, userPassw
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-// userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
-//   if (this.passwordChangedAt) {
-//     const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
 
-//     return JWTTimestamp < changedTimestamp;
-//   }
-//   // False means NOT changed
-//   return false;
-// };
+    return JWTTimestamp < changedTimestamp;
+  }
+  // False means NOT changed
+  return false;
+};
 
 // userSchema.methods.createPasswordResetToken = function() {
 //   const resetToken = crypo.randomBytes(32).toString('hex');

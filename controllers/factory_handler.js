@@ -19,6 +19,8 @@ exports.deleteOne = Model =>
 
 exports.updateOne = Model =>
   catchAsync(async (req, res, next) => {
+    console.log("pppppp");
+    console.log(req.body);
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
@@ -71,7 +73,7 @@ exports.getAll = Model =>
     // To allow for nested GET reviews on tour (hack)
     console.log('oo');
     let filter = {};
-    if (req.params.tourId) filter = { tour: req.params.tourId };
+    //if (req.params.tourId) filter = { tour: req.params.tourId };
 
     // EXECUTE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)

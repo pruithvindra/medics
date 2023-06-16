@@ -1,8 +1,9 @@
 const { Router } = require('express') ;
 const{createPatient,getAllPatients,updatePatient,getPatient} =  require( "../controllers/patient");
-
+const authController = require("../Controllers/authController");
 const router = Router();
 
+router.use(authController.protect);
 
 router.route("/").
 get(getAllPatients).
