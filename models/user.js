@@ -1,4 +1,4 @@
-//const  crypo = require(  'crypto';
+const  crypo = require('crypto');
 const  bcrypt = require('bcryptjs');
 const  mongoose = require(  'mongoose');
 const  validator = require(  'validator');
@@ -117,9 +117,9 @@ const userSchema = new mongoose.Schema({
         return this.role === 'doctor'
       }, 'consultationFee is required!' ],
     },
-  passwordChangedAt: Date,
-//   passwordResetToken: String,
-//   passwordResetExpires: Date,
+  passwordChangedAt: {type : Date, select:false},
+  passwordResetToken: String,
+  passwordResetExpires: Date,
   active: {
     type: Boolean,
     default: true,
@@ -169,20 +169,20 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   return false;
 };
 
-// userSchema.methods.createPasswordResetToken = function() {
-//   const resetToken = crypo.randomBytes(32).toString('hex');
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypo.randomBytes(32).toString('hex');
 
-//   this.passwordResetToken = crypo
-//     .createHash('sha256')
-//     .update(resetToken)
-//     .digest('hex');
+  this.passwordResetToken = crypo
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
 
-//   // console.log({ resetToken }, this.passwordResetToken);
+  // console.log({ resetToken }, this.passwordResetToken);
 
-//   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
-//   return resetToken;
-// };
+  return resetToken;
+};
 
 const User = mongoose.model('User', userSchema);
 

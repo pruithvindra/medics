@@ -7,18 +7,16 @@ const router = Router();
 
 router.route("/").
 get(authController.protect
-    ,(req, res, next)=>{
-    console.log(req.query);
-next();
-
-}
+  
 , authController.accessTo('sub-admin', 'admin'),getAllUsers);
 router.post('/signup', signup).post('/signin', signin);
+router.post('/updatePassword',authController.protect,authController.updatePassword ).post(`/forgotPassword`,authController.forgotPassword).post('/resetPassword/:token',(req, res, next)=>{
+  console.log("llll");
+  console.log(req.params.token);
+  next();},authController.resetPassword);
+
 router.route('/:id').
-  patch(authController.protect
-    ,    
-    updateUser).get(authController.protect
-    ,getUser)
+  patch(authController.protect,updateUser).get(authController.protect,getUser)
 //router.post('/login', authController.login);
 
 
