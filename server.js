@@ -3,7 +3,7 @@ const app =  require( "./app.js" );
 
 
 const port = process.env.PORT || 3000;
-mongoose.connect('mongodb+srv://pru:123456789d@cluster0.te02x.mongodb.net/Medics')
+mongoose.connect('mongodb+srv://pruithvi:<password>@foodtruck.fwogvgy.mongodb.net/?retryWrites=true&w=majority')
   .then(result => {
 
 
